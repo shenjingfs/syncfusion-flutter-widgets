@@ -1193,8 +1193,9 @@ String addEllipse(String text, int maxLength, String ellipse, {bool? isRtl}) {
 }
 
 /// To check template is within bounds.
-bool isTemplateWithinBounds(Rect bounds, Rect templateRect) =>
-    templateRect.left >= bounds.left &&
-    templateRect.left + templateRect.width <= bounds.left + bounds.width &&
-    templateRect.top >= bounds.top &&
-    templateRect.top + templateRect.height <= bounds.top + bounds.height;
+/// 
+/// Latest Behavior – When a single pixel of the annotation exceeds the plot area, the annotation is hidden.
+/// Modify: If two rectangles overlap, show and don't clip the annotation, otherwise hide it
+/// https://github.com/syncfusion/flutter-widgets/issues/804
+/// https://www.syncfusion.com/feedback/37191/only-clip-the-portion-of-the-annotation-that-extends-beyond-the-plot-area
+bool isTemplateWithinBounds(Rect bounds, Rect templateRect) => bounds.overlaps(templateRect);
